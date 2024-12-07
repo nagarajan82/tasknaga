@@ -1,4 +1,5 @@
 const { parse, stringify } = require('svgson')
+const polygons = ["path1529",  "path15851"]
 
 /* Modify the SVG based on Rotation,Color and Shape Filter
     1. Transform SVG to JS object
@@ -20,7 +21,18 @@ export const processingSVG = async (path: any, color: any, shape: any) => {
             svgObject.children.forEach((element: any) => {
                 if (selectedShape !== "none" && element.name === selectedShape && element.hasOwnProperty("attributes") && element.attributes.hasOwnProperty("id")) {
                     element.attributes.fill = color
+                    if (selectedShape === "polygon") {
+                        if (polygons.includes(element.attributes.id)) {
+                            element.attributes.fill = color
+                        }
+                    }
                 }
+                if (selectedShape !== "none" && selectedShape === "polygon" && element.hasOwnProperty("attributes") && element.attributes.hasOwnProperty("id")) {
+                    if (polygons.includes(element.attributes.id)) {
+                        element.attributes.fill = color
+                    }
+                }
+
             });
         }
         let response = stringify(svgObject)

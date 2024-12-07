@@ -1,7 +1,7 @@
 import React, { useState} from 'react';
 import './App.scss';
-import {Description} from "./Description";
-import {Implementation} from "./Implementation";
+import {Description} from "./components/Description";
+import {Implementation} from "./components/Implementation";
 
 export const App = () => {
     const [isDescription, setIsDescription ] = useState(false)

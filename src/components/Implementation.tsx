@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TreeView, { flattenTree } from "react-accessible-treeview";
 import "./implementation.css";
-import { locationsData } from "./data/locations";
+import { locationsData } from "../data/locations";
 import { EditMenu } from "./EditMenu";
 import {
   GridColumn,
@@ -11,7 +11,7 @@ import {
   Image,
   Header,
 } from "semantic-ui-react";
-import { processingSVG } from "./utils/services";
+import { processingSVG } from "../utils/services";
 import { DiCss3, DiJavascript, DiNpm } from "react-icons/di";
 import { FaList, FaRegFolder, FaRegFolderOpen } from "react-icons/fa";
 
@@ -84,7 +84,7 @@ const FileIcon = ({ filename }: any) => {
         return null;
     }
   } catch (error) {
-    return null
+    return null;
     // Log the error in ELK stack and Enable Monitoring
   }
 };
@@ -120,16 +120,21 @@ export const Implementation = () => {
   /* change Handler For Building Selection Features */
   const onSelection = async (selected: any) => {
     try {
-      await onReset();
+      setsvgSrc("");
+      setimgPath("");     
+      setMode("");
       if (selected.element.children.length === 0) {
+        setMode("SELECTION");
         let selectedId = selected.element.id;
         const sourceSvg = svgSources.find(({ id }: any) => id === selectedId);
         const imgPath = `assets/${sourceSvg.floorplan}`;
-        setimgPath(imgPath);
-        import(`/${imgPath}`).then((image) => {
-          setsvgSrc(image.default);
-        });
-        setMode("SELECTION");
+        setimgPath(imgPath);         
+        let url = await processingSVG(imgPath, color, shape);
+        let image:any = document.getElementById("selection_img");
+        image.src = url;
+        image.addEventListener("load", () => URL.revokeObjectURL(url), {
+          once: true,
+        });               
       } else {
         setMode("");
       }

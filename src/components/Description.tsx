@@ -1,4 +1,4 @@
-import guideVideoWebm from './assets/video/demo.webm';
+import guideVideoWebm from '../assets/video/demo.webm';
 
 export const Description = () => {
     return (
